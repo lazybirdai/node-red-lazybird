@@ -20,7 +20,7 @@ Requires Node-RED 3.1 or later and Node.js 18 or later.
 
 ## Set up your account
 
-1. [Sign up for Lazybird](https://www.lazybird.app). You can start free, no credit card needed.
+1. [Sign up for Lazybird](https://www.lazybird.app). The free plan includes 10,000 credits a month, no credit card needed.
 2. Open [Studio settings](https://www.lazybird.app/studio/settings) and create an API key.
 3. In Node-RED, add a **lazybird speech** node, click the pencil next to **Account**, paste the key and deploy.
 
@@ -46,13 +46,13 @@ Send the text to speak in `msg.payload`. The node outputs the MP3 as a buffer in
 <speak>Good morning. <break time="500ms"/> The front door is open.</speak>
 ```
 
-**Errors.** Errors such as an invalid API key, an unknown voice or an empty plan go to **catch** nodes, with a message that says what to fix.
+**Errors.** Errors such as an invalid API key, an unknown voice or missing credits go to **catch** nodes, with a message that says what to fix.
 
 **Example.** Import **Menu → Import → Examples → @lazybirdai/node-red-lazybird → save-speech-to-mp3** for a flow that saves speech to an MP3 file.
 
 ## Pricing
 
-Speech comes out of your Lazybird plan, shared with the Lazybird studio. You can start free; paid plans start at $9 a month and include commercial usage rights. See [pricing](https://www.lazybird.app/pricing).
+One credit is one character of text, shared between the Lazybird studio and the API. The free plan includes 10,000 credits a month; paid plans start at $9 a month and include commercial usage rights. See [pricing](https://www.lazybird.app/pricing).
 
 ## Resources
 
