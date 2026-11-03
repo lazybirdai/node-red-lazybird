@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2 (2026-11-03)
+
+- README: the changelog link works on the Node-RED flow library page.
+
 ## 0.1.1 (2026-11-03)
 
 - Published through npm trusted publishing, with provenance. No changes to the nodes.

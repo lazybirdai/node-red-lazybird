@@ -58,7 +58,7 @@ One credit is one character of text, shared between the Lazybird studio and the 
 
 - [Lazybird docs](https://www.lazybird.app/docs)
 - [Lazybird API reference](https://www.lazybird.app/docs/api-reference)
-- [Changelog](CHANGELOG.md)
+- [Changelog](https://github.com/lazybirdai/node-red-lazybird/blob/main/CHANGELOG.md)
 
 ## License
 

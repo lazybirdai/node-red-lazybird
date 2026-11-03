@@ -1,6 +1,6 @@
 {
   "name": "@lazybirdai/node-red-lazybird",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Node-RED node for Lazybird: turn text into natural AI speech (MP3) with 500+ voices in 150+ languages.",
   "license": "MIT",
   "homepage": "https://github.com/lazybirdai/node-red-lazybird#readme",
