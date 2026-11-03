@@ -1,0 +1,129 @@
+<script type="text/javascript">
+  (function () {
+    // Fills the voice field's suggestions from the config node's account. Typing searches.
+    function loadVoices(query) {
+      var config = $('#node-input-lazybird').val();
+      if (!config || config === '_ADD_') {
+        showNote('Pick or add a Lazybird account to load the voice list.');
+        return;
+      }
+      $.getJSON('lazybird/voices', { config: config, q: query || '' })
+        .done(function (voices) {
+          var list = $('#node-lazybird-voices').empty();
+          voices.forEach(function (voice) {
+            $('<option>').attr('value', voice.id).text(voice.label).appendTo(list);
+          });
+          showNote(voices.length ? '' : 'No voices match. You can also paste a voice ID.');
+        })
+        .fail(function (xhr) {
+          showNote((xhr.responseJSON && xhr.responseJSON.error) || 'Could not load the voice list.');
+        });
+    }
+
+    // Under the voice field: the picked voice's name, or why the list didn't load.
+    function showNote(message) {
+      var id = $('#node-input-voice').val();
+      var picked = $('#node-lazybird-voices option').filter(function () {
+        return this.value === id;
+      });
+      $('#node-lazybird-voice-note').text(message || picked.text());
+    }
+
+    RED.nodes.registerType('lazybird-speech', {
+      category: 'Lazybird',
+      color: '#F3B5A6',
+      defaults: {
+        name: { value: '' },
+        lazybird: { value: '', type: 'lazybird-config', required: true },
+        voice: { value: 'tgJ2Hes6DauwTg8kFrRPLN' },
+        locale: { value: '' },
+        speed: { value: '', validate: RED.validators.number(true) },
+      },
+      inputs: 1,
+      outputs: 1,
+      icon: 'font-awesome/fa-volume-up',
+      label: function () {
+        return this.name || 'lazybird speech';
+      },
+      paletteLabel: 'lazybird speech',
+      outputLabels: ['MP3 buffer'],
+      oneditprepare: function () {
+        var searchTimer;
+        $('#node-input-lazybird').on('change', function () {
+          loadVoices('');
+        });
+        $('#node-input-voice').on('input', function () {
+          var value = $(this).val();
+          clearTimeout(searchTimer);
+          // A picked suggestion is already a voice ID; anything else is a search.
+          showNote('');
+          if ($('#node-lazybird-voice-note').text()) return;
+          searchTimer = setTimeout(function () {
+            loadVoices(value);
+          }, 400);
+        });
+        loadVoices('');
+      },
+    });
+  })();
+</script>
+
+<script type="text/html" data-template-name="lazybird-speech">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="lazybird speech" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-lazybird"><i class="fa fa-user"></i> Account</label>
+    <input type="text" id="node-input-lazybird" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-voice"><i class="fa fa-microphone"></i> Voice</label>
+    <input type="text" id="node-input-voice" list="node-lazybird-voices" placeholder="Search voices or paste a voice ID" />
+    <datalist id="node-lazybird-voices"></datalist>
+  </div>
+  <div class="form-row" style="margin-top: -6px">
+    <label></label>
+    <span id="node-lazybird-voice-note" style="display: inline-block; width: 70%; opacity: 0.7"></span>
+  </div>
+  <div class="form-row">
+    <label for="node-input-locale"><i class="fa fa-globe"></i> Locale</label>
+    <input type="text" id="node-input-locale" placeholder="Optional, e.g. es-ES" />
+  </div>
+  <div class="form-row">
+    <label for="node-input-speed"><i class="fa fa-tachometer"></i> Speed</label>
+    <input type="text" id="node-input-speed" placeholder="1 is normal (0.5 to 2)" />
+  </div>
+</script>
+
+<script type="text/markdown" data-help-name="lazybird-speech">
+Turns text into natural AI speech with [Lazybird](https://www.lazybird.app) and outputs an MP3.
+
+### Inputs
+
+: payload (string) : the text to speak. Text that starts with `<speak>` is sent as SSML.
+: voice (string) : _optional_ voice ID, overrides the node's voice.
+: locale (string) : _optional_ language and accent to speak in, such as `es-ES`.
+: speed (number) : _optional_ 1 is normal speed, from 0.5 to 2.
+: settings (object) : _optional_ more voice settings: `pitch` (0.5 to 1.5), `volume` (0 to 2), `style` and `styleIntensity` for voices with speaking styles.
+
+### Outputs
+
+: payload (buffer) : the MP3 audio.
+: contentType (string) : `audio/mpeg`.
+
+### Details
+
+Pick a voice from the list (type to search Lazybird's 500+ voices and your own), or paste a voice ID.
+Every voice can speak other languages: set a locale such as `fr-FR` or `hi-IN`.
+
+Send the MP3 to a **file** node to save it, to an **http response** node to serve it, or to any node that uploads files.
+
+Speech comes out of your Lazybird plan; see [pricing](https://www.lazybird.app/pricing).
+Errors, such as an invalid API key or an empty plan, can be handled with a **catch** node.
+
+### References
+
+- [Lazybird API reference](https://www.lazybird.app/docs/api-reference)
+- [GitHub](https://github.com/lazybirdai/node-red-lazybird) - source and issues
+</script>

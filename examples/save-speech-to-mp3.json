@@ -1,0 +1,49 @@
+[
+  {
+    "id": "a1f0c2d3e4b5a601",
+    "type": "inject",
+    "name": "Text to speak",
+    "props": [{ "p": "payload" }],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "Welcome back. Here is today's weather: sunny, with a light breeze in the afternoon.",
+    "payloadType": "str",
+    "x": 150,
+    "y": 100,
+    "wires": [["a1f0c2d3e4b5a602"]]
+  },
+  {
+    "id": "a1f0c2d3e4b5a602",
+    "type": "lazybird-speech",
+    "name": "",
+    "lazybird": "a1f0c2d3e4b5a604",
+    "voice": "tgJ2Hes6DauwTg8kFrRPLN",
+    "locale": "",
+    "speed": "",
+    "x": 370,
+    "y": 100,
+    "wires": [["a1f0c2d3e4b5a603"]]
+  },
+  {
+    "id": "a1f0c2d3e4b5a603",
+    "type": "file",
+    "name": "Save MP3",
+    "filename": "lazybird-speech.mp3",
+    "filenameType": "str",
+    "appendNewline": false,
+    "createDir": true,
+    "overwriteFile": "true",
+    "encoding": "none",
+    "x": 580,
+    "y": 100,
+    "wires": [[]]
+  },
+  {
+    "id": "a1f0c2d3e4b5a604",
+    "type": "lazybird-config",
+    "name": "Lazybird account"
+  }
+]
