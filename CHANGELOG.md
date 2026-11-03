@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1 (2026-11-03)
+
+- Published through npm trusted publishing, with provenance. No changes to the nodes.
+
 ## 0.1.0 (2026-11-03)
 
 First release.
